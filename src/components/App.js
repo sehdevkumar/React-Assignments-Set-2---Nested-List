@@ -154,8 +154,95 @@ const states = [
   },
 ];
 
+function State(props){
+    const [getStates,setStates] = useState(false);
+    
+    const setData = ()=>{
+       if(getStates==false){
+         setStates(true);
+       }else{
+         setStates(false);
+       }
+    }
+
+   return (
+      <>
+         <li id={"state"+props.indexes} onClick={setData}>{props.stateName.name}
+          { getStates && <City city={props.stateName}></City>}
+         </li>
+      </>
+   )
+}
+
+
+
+
+function City(props){
+    const [getState2,setState2] = useState(false);
+    
+    const setData = (e)=>{
+       e.stopPropagation();
+       if(getState2==false){
+         setState2(true);
+       }else{
+         setState2(false);
+       }
+    }
+      return (
+       <> 
+        <ul>
+           {
+            //  console.log(props.city.cities)
+              props.city.cities.map((city,index)=>{
+                  return (
+                    <li id={"city"+(index+1)} onClick={setData}>{city.name}
+                       {getState2 && <Town town={city.towns} ></Town>}
+                    </li>
+                  )
+              })
+           }
+        </ul>
+       </>
+      )
+}
+
+function Town(props){
+   
+  return (
+
+    <>
+       <ul>
+           {
+             props.town.map((town,index)=>{
+               return (
+                  <li id={"town"+(index+1)}>{town.name}</li>
+               )
+             })
+           }
+       </ul>
+       
+    </>
+     
+  )
+
+
+}
+
 function App() {
-  return <div id="main"></div>;
+
+ 
+  return <div id="main">
+      <ul>
+      {
+        states.map((state,index)=>{
+          return(<State indexes={index+1}   stateName={state}></State>)
+        })
+      }
+
+      </ul>
+      
+
+  </div>;
 }
 
 export default App;
