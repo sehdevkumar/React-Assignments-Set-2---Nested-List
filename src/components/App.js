@@ -182,13 +182,13 @@ function City(props){
     
     const setData = (e)=>{
        e.stopPropagation();
-       if(getState2==false){
-        document.getElementById(e.target.id).childNodes[1].style.display="none";
-        setState2(true);
-       }else{
-        setState2(false);
-        document.getElementById(e.target.id).childNodes[1].style.display="block";
-       }
+        console.log(e.target.id);
+        if(!getState2)
+          setState2(true);
+        else
+          setState2(false);
+
+        console.log(getState2);
     }
       return (
        <> 
@@ -198,7 +198,7 @@ function City(props){
               props.city.cities.map((city,index)=>{
                   return (
                     <li key={index} id={"city"+(index+1)} onClick={setData}>{city.name}
-                       <Town town={city.towns} ></Town>
+                      { getState2 && <Town town={city.towns} ></Town>  }
                     </li>
                   )
               })
