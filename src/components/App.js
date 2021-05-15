@@ -2,6 +2,7 @@
   
 import React, { Component, useState } from "react";
 import "./../styles/App.css";
+
 // Do not alter the states const and values inside it.
 const states = [
   {
@@ -195,8 +196,10 @@ function City(props){
           const newLi = document.createElement("li");
           newLi.innerHTML=element.name;
           newLi.id="town"+(i++);
-          newLi.onclick=function(e){
-              e.stopPropagation();
+          newLi.onclick=function(es){
+             es.stopPropagation();
+             const parent= document.querySelector("#"+es.target.id).parentNode.innerHTML="";
+             console.log(parent);
           }
 
           list.appendChild(newLi);
