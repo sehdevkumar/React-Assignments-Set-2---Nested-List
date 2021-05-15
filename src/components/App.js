@@ -1,6 +1,6 @@
 
   
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import "./../styles/App.css";
 
 // Do not alter the states const and values inside it.
@@ -183,10 +183,12 @@ function State(props){
 function City(props){
     
     const stateIn =  parseInt(props.stateIndex)-1;
+    const [get,set] = useState(false);
+  
     const setData = (e)=>{
        e.stopPropagation();
-       const checker = e.target.getAttribute("checker");
-      if(checker==="false"){
+     
+      if(!get){
           const stateIndex = parseInt(props.stateIndex)-1;
           const data = states[stateIndex].cities[e.target.getAttribute("cityIndex")].towns;
 
@@ -198,19 +200,18 @@ function City(props){
           newLi.id="town"+(i++);
           newLi.onclick=function(es){
              es.stopPropagation();
-             const parent= document.querySelector("#"+es.target.id).parentNode.innerHTML="";
-             console.log(parent);
+             
           }
 
           list.appendChild(newLi);
           });
            
           document.querySelector("."+e.target.className).appendChild(list);
-          e.target.setAttribute("checker","true");
+          set(true);
       }else{
         
         document.querySelector("."+e.target.className).childNodes[1].remove();
-        e.target.setAttribute("checker","false");
+        set(false);
 
       }
 
@@ -223,7 +224,7 @@ function City(props){
             
               props.city.cities.map((city,index)=>{
                   return (
-                    <li key={index} cityIndex={index} checker="false" id={"city"+(index+1)} className={"city"+stateIn+(index+1)} onClick={setData}>{city.name}
+                    <li key={index} cityIndex={index}  id={"city"+(index+1)} className={"city"+stateIn+(index+1)} onClick={setData}>{city.name}
                      
                     </li>
                   )
