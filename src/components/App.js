@@ -1,8 +1,7 @@
 
   
 import React, { Component, useState } from "react";
-// import "./../styles/App.css";
-
+import "./../styles/App.css";
 // Do not alter the states const and values inside it.
 const states = [
   {
