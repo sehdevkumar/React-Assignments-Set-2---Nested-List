@@ -1,7 +1,7 @@
 
   
 import React, { Component, useState } from "react";
-import "./../styles/App.css";
+// import "./../styles/App.css";
 
 // Do not alter the states const and values inside it.
 const states = [
@@ -196,9 +196,13 @@ function City(props){
           const newLi = document.createElement("li");
           newLi.innerHTML=element.name;
           newLi.id="town"+(i++);
+          newLi.onclick=function(e){
+              e.stopPropagation();
+          }
+
           list.appendChild(newLi);
           });
-
+           
           document.querySelector("."+e.target.className).appendChild(list);
           e.target.setAttribute("checker","true");
       }else{
