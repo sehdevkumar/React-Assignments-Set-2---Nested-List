@@ -1,3 +1,5 @@
+
+  
 import React, { Component, useState } from "react";
 import "./../styles/App.css";
 
@@ -156,8 +158,9 @@ const states = [
 
 function State(props){
     const [getStates,setStates] = useState(false);
+    // const [getStateIndex,setStateIndex] = useState(0);
     
-    const setData = ()=>{
+    const setData = (e)=>{
        if(getStates==false){
          setStates(true);
        }else{
@@ -168,7 +171,7 @@ function State(props){
    return (
       <>
          <li id={"state"+props.indexes} onClick={setData}>{props.stateName.name}
-          { getStates && <City city={props.stateName}></City>}
+          { getStates && <City stateIndex={props.indexes}  city={props.stateName}></City>}
          </li>
       </>
    )
@@ -178,27 +181,44 @@ function State(props){
 
 
 function City(props){
-    const [getState2,setState2] = useState(false);
     
+    const stateIn =  parseInt(props.stateIndex)-1;
     const setData = (e)=>{
        e.stopPropagation();
-        console.log(e.target.id);
-        if(!getState2)
-          setState2(true);
-        else
-          setState2(false);
+       const checker = e.target.getAttribute("checker");
+      if(checker==="false"){
+          const stateIndex = parseInt(props.stateIndex)-1;
+          const data = states[stateIndex].cities[e.target.getAttribute("cityIndex")].towns;
 
-        console.log(getState2);
+          const list =  document.createElement("ul");
+          var i=1;
+          data.forEach(element => {
+          const newLi = document.createElement("li");
+          newLi.innerHTML=element.name;
+          newLi.id="town"+(i++);
+          list.appendChild(newLi);
+          });
+
+          document.querySelector("."+e.target.className).appendChild(list);
+          e.target.setAttribute("checker","true");
+      }else{
+        
+        document.querySelector("."+e.target.className).childNodes[1].remove();
+        e.target.setAttribute("checker","false");
+
+      }
+
     }
+
       return (
        <> 
         <ul>
            {
-            //  console.log(props.city.cities)
+            
               props.city.cities.map((city,index)=>{
                   return (
-                    <li key={index} id={"city"+(index+1)} onClick={setData}>{city.name}
-                      { getState2 && <Town town={city.towns} ></Town>  }
+                    <li key={index} cityIndex={index} checker="false" id={"city"+(index+1)} className={"city"+stateIn+(index+1)} onClick={setData}>{city.name}
+                     
                     </li>
                   )
               })
@@ -208,27 +228,7 @@ function City(props){
       )
 }
 
-function Town(props){
-   
-  return (
 
-    <>
-       <ul>
-           {
-             props.town.map((town,index)=>{
-               return (
-                  <li id={"town"+(index+1)}>{town.name}</li>
-               )
-             })
-           }
-       </ul>
-       
-    </>
-     
-  )
-
-
-}
 
 function App() {
 
