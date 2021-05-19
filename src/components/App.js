@@ -1,6 +1,6 @@
+import React from 'react'
 
-  
-import React, { Component, useEffect, useState } from "react";
+import{ Component, useEffect, useState } from "react";
 import "./../styles/App.css";
 
 // Do not alter the states const and values inside it.
@@ -156,102 +156,122 @@ const states = [
   },
 ];
 
-function State(props){
-    const [getStates,setStates] = useState(false);
-    // const [getStateIndex,setStateIndex] = useState(0);
-    
-    const setData = (e)=>{
-       if(getStates==false){
-         setStates(true);
-       }else{
-         setStates(false);
-       }
-    }
 
-   return (
-      <>
-         <li id={"state"+props.indexes} onClick={setData}>{props.stateName.name}
-          { getStates && <City stateIndex={props.indexes}  city={props.stateName}></City>}
-         </li>
-      </>
-   )
+function Townprint(props){
+
+    return (
+        <>
+          <li id={"town"+(props.index+1)}>{props.towns.name}</li>
+        </>
+    )
+}
+
+function Town(props){
+   
+    return (
+       
+        <>
+           <ul>
+               {
+                   props.towns.map((town,index)=>{
+                       return (
+                           <Townprint index={index} towns={town}></Townprint>
+                       )
+                   })
+               }
+           </ul>
+        </>
+
+    )
+    
+
 }
 
 
+function Cityprint(props){
+   
+    const [getFlag,setFlag] = useState(false);
 
-
-function City(props){
-    
-    const stateIn =  parseInt(props.stateIndex)-1;
-    const [get,set] = useState(false);
-  
-    const setData = (e)=>{
-       e.stopPropagation();
-     
-      if(!get){
-          const stateIndex = parseInt(props.stateIndex)-1;
-          const data = states[stateIndex].cities[e.target.getAttribute("cityIndex")].towns;
-
-          const list =  document.createElement("ul");
-          var i=1;
-          data.forEach(element => {
-          const newLi = document.createElement("li");
-          newLi.innerHTML=element.name;
-          newLi.id="town"+(i++);
-          newLi.onclick=function(es){
-             es.stopPropagation();
-             
-          }
-
-          list.appendChild(newLi);
-          });
-           
-          document.querySelector("."+e.target.className).appendChild(list);
-          set(true);
-      }else{
-        
-        document.querySelector("."+e.target.className).childNodes[1].remove();
-        set(false);
-
-      }
-
+    const hideANDshow=(e)=>{
+        e.stopPropagation();
+          if(getFlag)
+             setFlag(false)
+          else
+            setFlag(true)  
     }
 
-      return (
-       <> 
-        <ul>
-           {
-            
-              props.city.cities.map((city,index)=>{
-                  return (
-                    <li key={index} cityIndex={index}  id={"city"+(index+1)} className={"city"+stateIn+(index+1)} onClick={setData}>{city.name}
-                     
-                    </li>
-                  )
-              })
-           }
-        </ul>
-       </>
-      )
+    return (
+        <>
+           <li id={"city"+(props.index+1)} onClick={hideANDshow}>{props.cities.name}
+             { getFlag && <Town towns={props.cities.towns}></Town>}
+           </li>
+        </>
+    )
+
+}
+
+function City(props){
+
+    return (
+        <>
+           <ul>
+                {
+                    props.cities.map((city,index)=>{
+                        return (
+                            <Cityprint index={index} cities={city}></Cityprint>
+                        )
+                    })
+                }
+           </ul>
+        </>
+    )
+
+}
+
+
+function State(props){
+    const [getFlag,setFlag] = useState(false);
+
+    const hideANDshow2=(e)=>{
+        e.stopPropagation();
+        if(getFlag)
+           setFlag(false)
+        else
+          setFlag(true)  
+      }
+   
+    return (
+        
+            <>
+              <li id={"state"+(props.index+1)} onClick={hideANDshow2}>{props.states.name}
+                 { getFlag && <City cities={props.states.cities}></City>}
+              </li>
+            </>
+        
+
+    )
+
+
 }
 
 
 
 function App() {
+   
 
- 
-  return <div id="main">
-      <ul>
-      {
-        states.map((state,index)=>{
-          return(<State indexes={index+1}   stateName={state}></State>)
-        })
-      }
-
-      </ul>
-      
-
-  </div>;
+    return (
+        <div id="main"> 
+            <ul>
+                {
+                    states.map((state,index)=>{
+                       
+                        return    <State index={index} states={state}></State>
+                        
+                    })
+                }
+            </ul>
+        </div>
+    )
 }
 
 export default App;
